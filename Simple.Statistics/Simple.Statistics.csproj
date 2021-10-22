@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Dmitry Bychenko</Authors>
+    <Description>Simple Statistics</Description>
+    <Copyright>Copyright (c) 2021 by Dmitry Bychenko</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Simple Statistics</PackageReleaseNotes>
+  </PropertyGroup>
+
+</Project>
