@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Simple.Statistics;
+using Simple.Statistics.Distributions;
+using Simple.Statistics.Distributions.Library;
 using Simple.Statistics.Randoms;
 
 namespace Simple.Statistics.Tests {
@@ -12,10 +14,21 @@ namespace Simple.Statistics.Tests {
   public class ContinuousRandomsTest {
 
     [TestMethod]
-    public void LessThenOne() {
+    public void LessThenOneTesy() {
       using ContinuousRandom random = new ();
 
       Assert.IsTrue(random.NextDouble() < 1.0);
+    }
+
+    [TestMethod]
+    public void ConstantDtributionTest() {
+      var distrib = new ConstantDistribution(3);
+
+      using DistributedRandom random = new (distrib);
+
+      var actual = random.NextDouble();
+
+      Assert.IsTrue(actual == 3);
     }
   }
 }

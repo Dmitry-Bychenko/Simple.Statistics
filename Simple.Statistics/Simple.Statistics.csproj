@@ -8,6 +8,8 @@
     <Copyright>Copyright (c) 2021 by Dmitry Bychenko</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Simple Statistics</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/Dmitry-Bychenko/Simple.Statistics</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Dmitry-Bychenko/Simple.Statistics</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>
