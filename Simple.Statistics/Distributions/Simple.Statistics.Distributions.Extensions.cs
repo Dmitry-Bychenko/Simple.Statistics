@@ -1,6 +1,5 @@
-﻿using System;
-
-using Simple.Statistics.Randoms;
+﻿using Simple.Statistics.Randoms;
+using System;
 
 namespace Simple.Statistics.Distributions {
 

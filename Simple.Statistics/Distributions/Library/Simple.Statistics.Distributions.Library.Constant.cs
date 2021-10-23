@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simple.Statistics.Distributions.Library {
 
@@ -70,8 +66,8 @@ namespace Simple.Statistics.Distributions.Library {
     /// Quantile Distribution Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
-    public override double Qdf(double x) => x >= 0 && x <= 1.0 
-      ? Mean 
+    public override double Qdf(double x) => x >= 0 && x <= 1.0
+      ? Mean
       : throw new ArgumentOutOfRangeException(nameof(x));
 
     #endregion IContinuousDistribution

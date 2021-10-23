@@ -70,7 +70,7 @@ namespace Simple.Statistics.Distributions.Library {
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) {
-      if (To == From) 
+      if (To == From)
         return x < Mean ? 0.0
                  : x == Mean ? 0.5
                  : 1.0;

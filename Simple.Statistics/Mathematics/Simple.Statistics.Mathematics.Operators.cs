@@ -53,7 +53,7 @@ namespace Simple.Statistics.Mathematics {
     /// <returns></returns>
     public static Func<double, double> Inverse(this Func<double, double> function) =>
       Inverse(function, double.MinValue, double.MaxValue);
-    
+
     /// <summary>
     /// Inversed function
     /// </summary>
@@ -123,7 +123,7 @@ namespace Simple.Statistics.Mathematics {
     /// <returns></returns>
     public static double InverseAt(this Func<double, double> function, double toFind) =>
       InverseAt(function, toFind, double.MinValue, double.MaxValue);
-    
+
     /// <summary>
     /// Solve function(x) = 0 on [from…to]
     /// </summary>
@@ -132,7 +132,7 @@ namespace Simple.Statistics.Mathematics {
                                     double from,
                                     double to) =>
       InverseAt(function, 0.0, from, to);
-    
+
     /// <summary>
     /// Solve function(x) = 0 on [from…to]
     /// </summary>
@@ -140,7 +140,7 @@ namespace Simple.Statistics.Mathematics {
     /// <returns>Root</returns>
     public static double Solve(this Func<double, double> function) =>
       InverseAt(function, 0.0, double.MinValue, double.MaxValue);
-    
+
     #endregion Public
   }
 

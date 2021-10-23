@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Threading;
 
 namespace Simple.Statistics.Randoms {
 

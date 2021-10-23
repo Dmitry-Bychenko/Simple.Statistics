@@ -1,5 +1,5 @@
-﻿using System;
-using Simple.Statistics.Mathematics;
+﻿using Simple.Statistics.Mathematics;
+using System;
 
 namespace Simple.Statistics.Distributions.Library {
 

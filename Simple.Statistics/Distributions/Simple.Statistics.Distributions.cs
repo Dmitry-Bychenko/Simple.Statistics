@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Simple.Statistics.Mathematics;
+using System;
 using System.Threading;
-
-using Simple.Statistics.Mathematics;
 
 namespace Simple.Statistics.Distributions {
 

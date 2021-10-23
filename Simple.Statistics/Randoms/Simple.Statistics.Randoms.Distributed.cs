@@ -1,9 +1,8 @@
-﻿using System;
-
-using Simple.Statistics.Distributions;
+﻿using Simple.Statistics.Distributions;
+using System;
 
 namespace Simple.Statistics.Randoms {
-  
+
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
@@ -35,7 +34,7 @@ namespace Simple.Statistics.Randoms {
     /// Standard Constructor
     /// </summary>
     /// <param name="distribution">Distribution to use</param>
-    public DistributedRandom(IContinuousDistribution distribution) 
+    public DistributedRandom(IContinuousDistribution distribution)
       : this(distribution, null) { }
 
     #endregion Create
