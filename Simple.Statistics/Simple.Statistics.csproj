@@ -13,6 +13,8 @@
     <PackageTags>Statistics</PackageTags>
     <PackageIcon>Simple.Statistics.png</PackageIcon>
     <PackageIconUrl />
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Simple.Statistics.snk.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
