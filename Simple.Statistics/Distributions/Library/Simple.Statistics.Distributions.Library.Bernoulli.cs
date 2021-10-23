@@ -5,7 +5,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Bernoulli Probability Distribution
+  /// Bernoulli Distribution
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Bernoulli_distribution"/>
   //

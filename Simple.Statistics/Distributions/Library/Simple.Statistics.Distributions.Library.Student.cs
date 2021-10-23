@@ -6,27 +6,30 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Chi-Squared Distribution
+  /// Student Distribution
   /// </summary>
-  /// <seealso cref="https://en.wikipedia.org/wiki/Chi-squared_distribution"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/Student%27s_t-distribution"/>
   //
   //-------------------------------------------------------------------------------------------------------------------
 
-  public sealed class ChiSquaredDistribution : ContinuousDistribution {
+  public sealed class StudentDistribution : ContinuousDistribution {
     #region Create
 
     /// <summary>
-    /// Standard constructor
+    /// Standard Constructor
     /// </summary>
     /// <param name="degreeOfFreedom">Degree Of Freedom (n - 1)</param>
-    public ChiSquaredDistribution(double degreeOfFreedom) {
+    public StudentDistribution(double degreeOfFreedom) {
       if (degreeOfFreedom <= 0 || !double.IsFinite(degreeOfFreedom))
-        throw new ArgumentOutOfRangeException(nameof(degreeOfFreedom), "degreeOfFreedom value must be positive");
+        throw new ArgumentOutOfRangeException(nameof(degreeOfFreedom), "value must be positive");
 
       DegreeOfFreedom = degreeOfFreedom;
 
-      m_Mean = DegreeOfFreedom;
-      m_Variance = 2 * DegreeOfFreedom;
+      m_Mean = DegreeOfFreedom < 1 ? double.NaN : 0.0;
+      m_Variance =
+          DegreeOfFreedom > 2 ? DegreeOfFreedom / (DegreeOfFreedom - 2.0)
+        : DegreeOfFreedom > 1 ? double.PositiveInfinity
+        : double.NaN;
     }
 
     #endregion Create
@@ -39,9 +42,9 @@ namespace Simple.Statistics.Distributions.Library {
     public double DegreeOfFreedom { get; }
 
     /// <summary>
-    /// To String
+    /// To String (debug only)
     /// </summary>
-    public override string ToString() => $"Chi-Squared Distribution with df = {DegreeOfFreedom}";
+    public override string ToString() => $"Student Distribution with df = {DegreeOfFreedom}";
 
     #endregion Public
 
@@ -52,10 +55,10 @@ namespace Simple.Statistics.Distributions.Library {
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) {
-      if (x <= 0)
-        throw new ArgumentOutOfRangeException(nameof(x), "value must be positive");
+      if (x < 0)
+        throw new ArgumentOutOfRangeException(nameof(x), "value must not be negative");
 
-      return GammaFunctions.GammaLowRegular(DegreeOfFreedom / 2, x / 2);
+      return 1.0 - GammaFunctions.BetaIncompleteRegular(DegreeOfFreedom / (x * x + DegreeOfFreedom), DegreeOfFreedom / 2, 0.5) / 2;
     }
 
     /// <summary>
@@ -63,10 +66,8 @@ namespace Simple.Statistics.Distributions.Library {
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
     public override double Pdf(double x) {
-      if (x <= 0)
-        throw new ArgumentOutOfRangeException(nameof(x), "value must be positive");
-
-      return Math.Pow(x, DegreeOfFreedom / 2 - 1) * Math.Exp(-x / 2) / (Math.Pow(2, DegreeOfFreedom / 2) * GammaFunctions.Gamma(DegreeOfFreedom / 2));
+      return GammaFunctions.Gamma((DegreeOfFreedom + 1) / 2) / (Math.Sqrt(DegreeOfFreedom * Math.PI) * GammaFunctions.Gamma(DegreeOfFreedom / 2)) *
+              Math.Pow(1 + x * x / DegreeOfFreedom, -(DegreeOfFreedom + 1) / 2);
     }
 
     #endregion IContinuousDistribution

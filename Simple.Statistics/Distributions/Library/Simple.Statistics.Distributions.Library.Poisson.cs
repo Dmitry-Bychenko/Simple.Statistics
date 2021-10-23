@@ -6,7 +6,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Poisson Probability Distribution
+  /// Poisson Distribution
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Poisson_distribution"/>
   //
@@ -44,7 +44,7 @@ namespace Simple.Statistics.Distributions.Library {
 
     #endregion Public
 
-    #region IContinuousProbabilityDistribution
+    #region IContinuousDistribution
 
     /// <summary>
     /// Cumulative Density Function
@@ -74,7 +74,7 @@ namespace Simple.Statistics.Distributions.Library {
       return Math.Pow(Lambda, x) * Math.Exp(-Lambda) / GammaFunctions.Factorial(x);
     }
 
-    #endregion IContinuousProbabilityDistribution
+    #endregion IContinuousDistribution
   }
 
 }

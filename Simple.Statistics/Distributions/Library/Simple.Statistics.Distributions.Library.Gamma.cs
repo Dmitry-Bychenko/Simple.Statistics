@@ -6,7 +6,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Gamma Probability Distribution
+  /// Gamma Distribution
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Gamma_distribution"/>
   //

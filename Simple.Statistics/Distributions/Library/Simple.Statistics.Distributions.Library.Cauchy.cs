@@ -5,7 +5,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Normal Probability Distribution
+  /// Cauchy Distribution
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Cauchy_distribution"/>
   //
@@ -59,7 +59,7 @@ namespace Simple.Statistics.Distributions.Library {
 
     #endregion Public
 
-    #region IContinuousProbabilityDistribution
+    #region IContinuousDistribution
 
     /// <summary>
     /// Cumulative Density Function
@@ -88,7 +88,7 @@ namespace Simple.Statistics.Distributions.Library {
       return Offset + Gamma * Math.Tan(Math.PI * (x - 0.5));
     }
 
-    #endregion IContinuousProbabilityDistribution
+    #endregion IContinuousDistribution
   }
 
 }

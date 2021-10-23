@@ -5,7 +5,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Uniform Probability Distribution for [From..To) range
+  /// Uniform Distribution for [From..To) range
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)"/>
   //
@@ -59,7 +59,7 @@ namespace Simple.Statistics.Distributions.Library {
     /// </summary>
     public override string ToString() => (To == From)
       ? $"Constant Distribution (mean = {Mean})"
-      : $"Uniform Probability Distribution for [{From}..{To}) range";
+      : $"Uniform Distribution for [{From}..{To}) range";
 
     #endregion Public
 
@@ -103,7 +103,7 @@ namespace Simple.Statistics.Distributions.Library {
         : From + x * (To - From);
     }
 
-    #endregion IProbabilityDistribution
+    #endregion IContinuousDistribution
   }
 
 }

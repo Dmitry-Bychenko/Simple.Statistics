@@ -51,7 +51,7 @@ namespace Simple.Statistics.Distributions.Library {
     /// <summary>
     /// To String (debug only)
     /// </summary>
-    public override string ToString() => $"Normal Probability Distribution with mean = {Mean}; sd = {StandardError}";
+    public override string ToString() => $"Normal Distribution with mean = {Mean}; sd = {StandardError}";
 
     #endregion Public
 

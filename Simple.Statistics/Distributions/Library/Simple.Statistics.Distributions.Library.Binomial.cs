@@ -6,7 +6,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Binomial Probability Distribution
+  /// Binomial Distribution
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Binomial_distribution"/>
   //
@@ -68,7 +68,7 @@ namespace Simple.Statistics.Distributions.Library {
 
     #endregion Public
 
-    #region IContinuousProbabilityDistribution
+    #region IContinuousDistribution
 
     /// <summary>
     /// Cumulative Density Function
@@ -97,7 +97,7 @@ namespace Simple.Statistics.Distributions.Library {
       return coef * Math.Pow(P, x) * Math.Pow(Q, N - x);
     }
 
-    #endregion IContinuousProbabilityDistribution
+    #endregion IContinuousDistribution
   }
 
 }

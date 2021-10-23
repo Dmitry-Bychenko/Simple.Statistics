@@ -6,7 +6,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Beta Probability Distribution
+  /// Beta Distribution
   /// </summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Beta_distribution"/>
   //
@@ -58,7 +58,7 @@ namespace Simple.Statistics.Distributions.Library {
 
     #endregion Public
 
-    #region IContinuousProbabilityDistribution
+    #region IContinuousDistribution
 
     /// <summary>
     /// Cumulative Density Function
@@ -91,7 +91,7 @@ namespace Simple.Statistics.Distributions.Library {
       return Math.Pow(x, Alpha - 1.0) * Math.Pow(1.0 - x, Beta - 1.0) / GammaFunctions.BetaFunc(Alpha, Beta);
     }
 
-    #endregion IContinuousProbabilityDistribution
+    #endregion IContinuousDistribution
   }
 
 }

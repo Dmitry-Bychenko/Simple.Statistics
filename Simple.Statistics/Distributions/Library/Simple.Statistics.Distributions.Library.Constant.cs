@@ -5,7 +5,7 @@ namespace Simple.Statistics.Distributions.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// Constant Probability Distribution. 
+  /// Constant Distribution. 
   /// Random value can have a single constant value only 
   /// PDF is Dirac Delta Function
   /// </summary>
