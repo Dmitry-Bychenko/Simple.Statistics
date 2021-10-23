@@ -1,7 +1,6 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
-namespace Simple.Statistics.Randoms {
+namespace Simple.Statistics.Randoms.Library {
 
   //-------------------------------------------------------------------------------------------------------------------
   //
@@ -11,7 +10,7 @@ namespace Simple.Statistics.Randoms {
   //
   //-------------------------------------------------------------------------------------------------------------------
 
-  public sealed class CryptoRandom : IContinuousRandom, IDisposable {
+  public sealed class CryptoRandom : IContinuousRandom {
     #region Private Data
 
     private RNGCryptoServiceProvider m_Provider = new();

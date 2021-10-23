@@ -11,7 +11,7 @@ namespace Simple.Statistics.Randoms {
   //
   //-------------------------------------------------------------------------------------------------------------------
 
-  public sealed class DistributedRandom : IContinuousRandom, IDisposable {
+  public sealed class DistributedRandom : IContinuousRandom {
     #region Private Data
 
     private IContinuousRandom m_Random;

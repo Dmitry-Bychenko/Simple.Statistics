@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Threading;
 
-namespace Simple.Statistics.Randoms {
+namespace Simple.Statistics.Randoms.Library {
 
   //-------------------------------------------------------------------------------------------------------------------
   //
@@ -12,7 +12,7 @@ namespace Simple.Statistics.Randoms {
   //
   //-------------------------------------------------------------------------------------------------------------------
 
-  public sealed class ContinuousRandom : IContinuousRandom, IDisposable {
+  public sealed class ContinuousRandom : IContinuousRandom {
     #region Private Data
 
     private ThreadLocal<Random> m_Random;

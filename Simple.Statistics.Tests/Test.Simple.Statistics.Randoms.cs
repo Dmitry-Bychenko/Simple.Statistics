@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Simple.Statistics.Distributions.Library;
 using Simple.Statistics.Randoms;
+using Simple.Statistics.Randoms.Library;
 
 namespace Simple.Statistics.Tests {
 

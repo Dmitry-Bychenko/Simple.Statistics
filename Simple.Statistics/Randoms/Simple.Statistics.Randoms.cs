@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simple.Statistics.Randoms.Library;
+using System;
 
 namespace Simple.Statistics.Randoms {
 
@@ -10,7 +11,7 @@ namespace Simple.Statistics.Randoms {
   //
   //-------------------------------------------------------------------------------------------------------------------
 
-  public interface IContinuousRandom {
+  public interface IContinuousRandom : IDisposable {
     /// <summary>
     /// Next Random Double Value
     /// </summary>

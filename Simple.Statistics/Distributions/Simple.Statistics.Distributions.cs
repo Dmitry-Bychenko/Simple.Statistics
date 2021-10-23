@@ -76,6 +76,11 @@ namespace Simple.Statistics.Distributions {
       return Integrals.SimpsonAt((x) => x * x * Pdf(x), left, right) - Mean * Mean;
     }
 
+    /// <summary>
+    /// Median Computation
+    /// </summary>
+    protected virtual double CoreMedian() => Qdf(0.5);
+
     #endregion Algorithm
 
     #region Public
@@ -108,6 +113,11 @@ namespace Simple.Statistics.Distributions {
     /// Standard Error
     /// </summary>
     public double StandardError => Math.Sqrt(Variance);
+
+    /// <summary>
+    /// Median
+    /// </summary>
+    public double Median => CoreMedian();
 
     /// <summary>
     /// To String 
