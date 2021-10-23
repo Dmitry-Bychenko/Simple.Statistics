@@ -1,3 +1,5 @@
 ﻿https://stackoverflow.com/questions/45460146/how-to-use-intels-rdrand-using-inline-assembly-with-net
 
 https://en.wikipedia.org/wiki/Probability_distribution
+
+https://en.wikipedia.org/wiki/List_of_probability_distributions
