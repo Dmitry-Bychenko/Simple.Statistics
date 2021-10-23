@@ -25,7 +25,7 @@ namespace Simple.Statistics.Distributions.Library {
     /// </summary>
     /// <param name="mean">Mean</param>
     public ConstantDistribution(double mean) {
-      if (double.IsInfinity(mean) || double.IsNaN(mean))
+      if (!double.IsFinite(mean))
         throw new ArgumentOutOfRangeException(nameof(mean), "Mean value must be finite");
 
       m_Mean = mean;

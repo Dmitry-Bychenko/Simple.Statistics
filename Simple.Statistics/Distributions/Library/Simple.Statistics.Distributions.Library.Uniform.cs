@@ -18,7 +18,7 @@ namespace Simple.Statistics.Distributions.Library {
     /// Standard constructor
     /// </summary>
     /// <param name="from">Range: from (inclusive)</param>
-    /// <param name="to">Range: to (exclusive)</param>
+    /// <param name="to">Range: to (inclusive)</param>
     public UniformDistribution(double from, double to) {
       if (!double.IsFinite(from))
         throw new ArgumentOutOfRangeException(nameof(from), "value must be finite");
