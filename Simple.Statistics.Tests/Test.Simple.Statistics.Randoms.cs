@@ -29,4 +29,5 @@ namespace Simple.Statistics.Tests {
       Assert.IsTrue(actual == 3);
     }
   }
+
 }

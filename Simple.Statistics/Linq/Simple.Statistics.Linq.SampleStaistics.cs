@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simple.Statistics.Linq {
 
@@ -28,9 +26,9 @@ namespace Simple.Statistics.Linq {
 
     private IEnumerable<ItemWithStatistics<T>> Generator() {
       foreach (var item in m_Source) {
-        foreach (var executor in m_Executors) 
+        foreach (var executor in m_Executors)
           executor.Append(item);
-        
+
         yield return new ItemWithStatistics<T>(item, this);
       }
     }
@@ -63,6 +61,17 @@ namespace Simple.Statistics.Linq {
     #endregion Create
 
     #region Public
+
+    /// <summary>
+    /// To Completion (scan all data and compute the final statistics)
+    /// </summary>
+    public SampleStatistics<T> ToCompletion() {
+      foreach (var item in m_Source)
+        foreach (var executor in m_Executors)
+          executor.Append(item);
+
+      return this;
+    }
 
     /// <summary>
     /// Statistics
@@ -101,9 +110,17 @@ namespace Simple.Statistics.Linq {
     /// <summary>
     /// To Sample Statistics 
     /// </summary>
-    public static SampleStatistics<T> ToSampleStatistics<T>(this IEnumerable<T> source) =>
-      new (source);
-    
+    public static SampleStatistics<T> ToSampleStatistics<T>(this IEnumerable<T> source,
+                                                                 IEnumerable<ISampleStatisticsExecutor<T>> statistics) =>
+      new(source, statistics);
+
+    /// <summary>
+    /// To Sample Statistics 
+    /// </summary>
+    public static SampleStatistics<T> ToSampleStatistics<T>(this IEnumerable<T> source,
+                                                          params ISampleStatisticsExecutor<T>[] statistics) =>
+      new(source, statistics);
+
     #endregion Public
   }
 

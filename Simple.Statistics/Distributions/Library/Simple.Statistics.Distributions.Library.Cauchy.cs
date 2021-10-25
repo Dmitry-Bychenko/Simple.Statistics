@@ -65,6 +65,52 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double offset, double gamma) {
+      if (!double.IsFinite(offset))
+        throw new ArgumentOutOfRangeException(nameof(offset), "offset parameter must be positive");
+      if (gamma <= 0 || !double.IsFinite(gamma))
+        throw new ArgumentOutOfRangeException(nameof(gamma), "gamma parameter must be positive");
+
+      return 0.5 + Math.Atan((x - offset) / gamma) / Math.PI;
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double offset, double gamma) {
+      if (!double.IsFinite(offset))
+        throw new ArgumentOutOfRangeException(nameof(offset), "offset parameter must be positive");
+      if (gamma <= 0 || !double.IsFinite(gamma))
+        throw new ArgumentOutOfRangeException(nameof(gamma), "gamma parameter must be positive");
+
+      return 1.0 / (Math.PI * gamma * (1 + (x - offset) * (x - offset) / gamma / gamma));
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double offset, double gamma) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+      if (!double.IsFinite(offset))
+        throw new ArgumentOutOfRangeException(nameof(offset), "offset parameter must be positive");
+      if (gamma <= 0 || !double.IsFinite(gamma))
+        throw new ArgumentOutOfRangeException(nameof(gamma), "gamma parameter must be positive");
+
+      if (x == 0)
+        return double.NegativeInfinity;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return offset + gamma * Math.Tan(Math.PI * (x - 0.5));
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) => 0.5 + Math.Atan((x - Offset) / Gamma) / Math.PI;
 
     /// <summary>

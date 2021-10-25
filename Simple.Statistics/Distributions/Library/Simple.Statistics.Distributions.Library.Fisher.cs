@@ -65,9 +65,64 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
-    public override double Cdf(double x) {
+    public static double Cdf(double x, double d1, double d2) {
+      if (d1 <= 0.0)
+        throw new ArgumentOutOfRangeException(nameof(d1));
+      if (d2 <= 0.0)
+        throw new ArgumentOutOfRangeException(nameof(d2));
+
+      if (x <= 0)
+        return 0.0;
+
+      return GammaFunctions.BetaIncompleteRegular(d1 * x / (d1 * x + d2), d1 / 2, d2 / 2);
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double d1, double d2) {
       if (x <= 0)
         throw new ArgumentOutOfRangeException(nameof(x), "value must be positive");
+
+      if (d1 <= 0.0)
+        throw new ArgumentOutOfRangeException(nameof(d1));
+      if (d2 <= 0.0)
+        throw new ArgumentOutOfRangeException(nameof(d2));
+
+      return Math.Sqrt(Math.Pow(d1 * x, d1) *
+                       Math.Pow(d2, d2) /
+                       Math.Pow(d1 * x + d2, d1 + d2)) /
+             (x * GammaFunctions.BetaFunc(d1 / 2, d2 / 2));
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double d1, double d2) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+      if (d1 <= 0.0)
+        throw new ArgumentOutOfRangeException(nameof(d1));
+      if (d2 <= 0.0)
+        throw new ArgumentOutOfRangeException(nameof(d2));
+
+      if (x == 0)
+        return 0;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return Operators.Solve((v) => Cdf(v, d1, d2) - x, 0, double.PositiveInfinity);
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public override double Cdf(double x) {
+      if (x <= 0)
+        return 0.0;
 
       return GammaFunctions.BetaIncompleteRegular(D1 * x / (D1 * x + D2),
                                                   D1 / 2,

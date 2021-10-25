@@ -55,6 +55,72 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double mean, double scale) {
+      if (!double.IsFinite(mean))
+        throw new ArgumentOutOfRangeException(nameof(mean), "mean value must be finite");
+      if (!double.IsFinite(scale))
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be finite");
+
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale), "mean value must be positive");
+
+      if (double.IsNegativeInfinity(x))
+        return 0.0;
+      if (double.IsPositiveInfinity(x))
+        return 1.0;
+
+      return 1.0 / (1 + Math.Exp((mean - x) / scale));
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double mean, double scale) {
+      if (!double.IsFinite(mean))
+        throw new ArgumentOutOfRangeException(nameof(mean), "mean value must be finite");
+      if (!double.IsFinite(scale))
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be finite");
+
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale), "mean value must be positive");
+
+      if (double.IsInfinity(x))
+        return 0.0;
+
+      double v = Math.Exp((mean - x) / scale);
+
+      return v / scale / (1 + v) / (1 + v);
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double mean, double scale) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+
+      if (!double.IsFinite(mean))
+        throw new ArgumentOutOfRangeException(nameof(mean), "mean value must be finite");
+      if (!double.IsFinite(scale))
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be finite");
+
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale), "mean value must be positive");
+
+      if (x == 0)
+        return double.NegativeInfinity;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return mean + scale * Math.Log(x / (1.0 - x));
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) {
       if (x < 0)
         throw new ArgumentOutOfRangeException(nameof(x), "value must be positive");

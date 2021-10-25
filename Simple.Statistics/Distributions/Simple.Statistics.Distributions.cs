@@ -152,9 +152,7 @@ namespace Simple.Statistics.Distributions {
       if (x < 0 || x > 1)
         throw new ArgumentOutOfRangeException(nameof(x));
 
-      Func<double, double> cdf = Cdf;
-
-      return cdf.Inverse(double.MinValue, double.MaxValue)(x);
+      return Operators.Solve((v) => Cdf(v) - x, 0, double.PositiveInfinity);
     }
 
     #endregion IContinuousDistribution

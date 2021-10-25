@@ -49,6 +49,47 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double sigma) {
+      if (sigma <= 0 || !double.IsFinite(sigma))
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be positive");
+
+      return 1 - Math.Exp(-x * x / 2 / sigma / sigma);
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double sigma) {
+      if (sigma <= 0 || !double.IsFinite(sigma))
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be positive");
+
+      return x / sigma / sigma * Math.Exp(-x * x / 2 / sigma / sigma);
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double sigma) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+      if (sigma <= 0 || !double.IsFinite(sigma))
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be positive");
+
+      if (x == 0)
+        return 0.0;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return sigma * Math.Sqrt(-2 * Math.Log(1 - x));
+    }
+
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) =>
       1 - Math.Exp(-x * x / 2 / Sigma / Sigma);
 

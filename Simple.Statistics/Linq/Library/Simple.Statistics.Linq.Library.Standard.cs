@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simple.Statistics.Linq.Library {
 
@@ -23,7 +20,7 @@ namespace Simple.Statistics.Linq.Library {
 
     #region Algorithm
 
-    private static double StandardMap(T item) => (double) Convert.ToDouble(item);
+    private static double StandardMap(T item) => (double)Convert.ToDouble(item);
 
     #endregion Algorithm
 
@@ -43,7 +40,7 @@ namespace Simple.Statistics.Linq.Library {
       if (comparer is null) {
         comparer = Comparer<T>.Default;
 
-        if (comparer is null) 
+        if (comparer is null)
           comparer = Comparer<T>.Create((left, right) => Map(left).CompareTo(Map(right)));
       }
 
@@ -199,4 +196,54 @@ namespace Simple.Statistics.Linq.Library {
     #endregion ISampleStatisticsExecutor<T>
   }
 
+  //-------------------------------------------------------------------------------------------------------------------
+  //
+  /// <summary>
+  /// Enumerable Extensions
+  /// </summary>
+  //
+  //-------------------------------------------------------------------------------------------------------------------
+
+  public static partial class EnumerableExtensions {
+    #region Public
+
+    /// <summary>
+    /// To Standard Statistics
+    /// </summary>
+    public static StandardSampleStatistics<T> ToStandardStatistics<T>(this IEnumerable<T> source,
+                                                                           Func<T, double> selector,
+                                                                           IComparer<T> comparer) {
+      if (source is null)
+        throw new ArgumentNullException(nameof(source));
+
+      StandardSampleStatistics<T> result = new(selector, comparer);
+
+      foreach (var item in source)
+        ((ISampleStatisticsExecutor<T>)result).Append(item);
+
+      return result;
+    }
+
+    /// <summary>
+    /// To Standard Statistics
+    /// </summary>
+    public static StandardSampleStatistics<T> ToStandardStatistics<T>(this IEnumerable<T> source,
+                                                                           Func<T, double> selector)
+      where T : IComparable<T> => ToStandardStatistics<T>(source, selector, Comparer<T>.Default);
+
+    /// <summary>
+    /// To Standard Statistics
+    /// </summary>
+    public static StandardSampleStatistics<T> ToStandardStatistics<T>(this IEnumerable<T> source)
+      where T : IComparable<T> => ToStandardStatistics<T>(source, null, Comparer<T>.Default);
+
+    /// <summary>
+    /// To Standard Statistics
+    /// </summary>
+    public static StandardSampleStatistics<T> ToStandardStatistics<T>(this IEnumerable<T> source,
+                                                                           IComparer<T> comparer) =>
+      ToStandardStatistics<T>(source, null, comparer);
+
+    #endregion Public
+  }
 }

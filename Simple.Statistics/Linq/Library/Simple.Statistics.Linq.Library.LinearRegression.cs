@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simple.Statistics.Linq.Library {
 
@@ -85,7 +82,7 @@ namespace Simple.Statistics.Linq.Library {
     /// Variance X
     /// </summary>
     public double VarianceX => Sxx / N - MeanX * MeanX;
-    
+
     /// <summary>
     /// Variance Y
     /// </summary>
@@ -153,6 +150,21 @@ namespace Simple.Statistics.Linq.Library {
     public double StandardErrorB => Math.Sqrt(VarianceB);
 
     /// <summary>
+    /// TSS
+    /// </summary>
+    public double TSS => Syy - Sy * Sy / N;
+
+    /// <summary>
+    /// ESS
+    /// </summary>
+    public double ESS => A * A * (Sxx - Sx * Sx / N);
+
+    /// <summary>
+    /// RSS
+    /// </summary>
+    public double RSS => TSS - ESS;
+
+    /// <summary>
     /// Correlation
     /// </summary>
     public double R => (Sxy / N - MeanX * MeanY) / Math.Sqrt(VarianceX) / Math.Sqrt(VarianceY);
@@ -160,17 +172,17 @@ namespace Simple.Statistics.Linq.Library {
     /// <summary>
     /// Data Degree Of Freedom
     /// </summary>
-    public long DataDegree => N - 2;
+    public long DataDegreeOfFreedom => N - 2;
 
     /// <summary>
     /// Variable Degree Of Freedom
     /// </summary>
-    public long VariableDegree => 1;
+    public long VariableDegreeOfFreedom => 1;
 
     /// <summary>
     /// Empirical Fisher Coefficient F(DataDegree, VariableDegree)
     /// </summary>
-    public double F => R * R / (1 - R * R) * DataDegree / VariableDegree;
+    public double F => R * R / (1 - R * R) * DataDegreeOfFreedom / VariableDegreeOfFreedom;
 
     /// <summary>
     /// Predictor
@@ -195,6 +207,37 @@ namespace Simple.Statistics.Linq.Library {
     }
 
     #endregion ISampleStatisticsExecutor<T>
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------
+  //
+  /// <summary>
+  /// Enumerable Extensions
+  /// </summary>
+  //
+  //-------------------------------------------------------------------------------------------------------------------
+
+  public static partial class EnumerableExtensions {
+    #region Public
+
+    /// <summary>
+    /// To Linear Regression
+    /// </summary>
+    public static LinearRegression<T> ToLinearRegression<T>(this IEnumerable<T> source,
+                                                                 Func<T, double> xSelector,
+                                                                 Func<T, double> ySelector) {
+      if (source is null)
+        throw new ArgumentNullException(nameof(source));
+
+      LinearRegression<T> result = new(xSelector, ySelector);
+
+      foreach (var item in source)
+        ((ISampleStatisticsExecutor<T>)result).Append(item);
+
+      return result;
+    }
+
+    #endregion Public
   }
 
 }

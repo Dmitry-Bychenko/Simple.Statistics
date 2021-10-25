@@ -61,6 +61,54 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double p) {
+      if (p < 0 || p > 1)
+        throw new ArgumentOutOfRangeException(nameof(p));
+
+      if (x < 0)
+        return 0.0;
+      if (x > 1)
+        return 1.0;
+
+      return 1.0 - p + p * x;
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double p) {
+      if (p < 0 || p > 1)
+        throw new ArgumentOutOfRangeException(nameof(p));
+
+      if (x < 0.0 || x > 1.0)
+        return 0;
+
+      return x * p + (1.0 - x) * (1.0 - p);
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double p) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+      if (p < 0 || p > 1)
+        throw new ArgumentOutOfRangeException(nameof(p));
+
+      if (x <= 1 - p)
+        return 0.0;
+      if (x == 1)
+        return 1.0;
+
+      return x / p + (1 - 1 / p);
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) {
       if (x < 0)
         return 0.0;

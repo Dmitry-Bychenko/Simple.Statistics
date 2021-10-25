@@ -51,6 +51,29 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double mean) =>
+        x < mean ? 0.0
+      : x == mean ? 0.5
+      : 1.0;
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double mean) => x == mean ? double.PositiveInfinity : 0.0;
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double mean) => x >= 0 && x <= 1.0
+      ? mean
+      : throw new ArgumentOutOfRangeException(nameof(x));
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) =>
         x < Mean ? 0.0
       : x == Mean ? 0.5

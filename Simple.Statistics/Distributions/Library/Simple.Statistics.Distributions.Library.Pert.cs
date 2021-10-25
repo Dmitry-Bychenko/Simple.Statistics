@@ -83,6 +83,94 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double a, double b, double c) {
+      if (!double.IsFinite(a))
+        throw new ArgumentOutOfRangeException(nameof(a), "a value must be finite");
+      if (!double.IsFinite(b))
+        throw new ArgumentOutOfRangeException(nameof(b), "b value must be finite");
+      if (!double.IsFinite(c))
+        throw new ArgumentOutOfRangeException(nameof(c), "c value must be finite");
+
+      if (b <= a)
+        throw new ArgumentOutOfRangeException(nameof(b), "b must be bigger than a");
+      if (c <= b)
+        throw new ArgumentOutOfRangeException(nameof(c), "c must be bigger than b");
+
+      if (x <= a)
+        return 0.0;
+      if (x >= c)
+        return 1.0;
+
+      double Alpha = 1.0 + 4.0 * (b - a) / (c - a);
+      double Beta = 1.0 + 4.0 * (c - b) / (c - a);
+
+      return GammaFunctions.BetaIncomplete((x - a) / (c - a), Alpha, Beta);
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    /// <seealso cref="https://proofwiki.org/wiki/Binomial_Coefficient_expressed_using_Beta_Function"/>
+    public static double Pdf(double x, double a, double b, double c) {
+      if (!double.IsFinite(a))
+        throw new ArgumentOutOfRangeException(nameof(a), "a value must be finite");
+      if (!double.IsFinite(b))
+        throw new ArgumentOutOfRangeException(nameof(b), "b value must be finite");
+      if (!double.IsFinite(c))
+        throw new ArgumentOutOfRangeException(nameof(c), "c value must be finite");
+
+      if (b <= a)
+        throw new ArgumentOutOfRangeException(nameof(b), "b must be bigger than a");
+      if (c <= b)
+        throw new ArgumentOutOfRangeException(nameof(c), "c must be bigger than b");
+
+      if (x <= a)
+        return 0.0;
+      if (x >= c)
+        return 0.0;
+
+      double Alpha = 1.0 + 4.0 * (b - a) / (c - a);
+      double Beta = 1.0 + 4.0 * (c - b) / (c - a);
+
+      return Math.Pow(x - a, Alpha - 1) *
+             Math.Pow(c - x, Beta - 1) /
+             GammaFunctions.BetaFunc(Alpha, Beta) /
+             Math.Pow(c - a, Alpha + Beta - 1);
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double a, double b, double c) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+
+      if (!double.IsFinite(a))
+        throw new ArgumentOutOfRangeException(nameof(a), "a value must be finite");
+      if (!double.IsFinite(b))
+        throw new ArgumentOutOfRangeException(nameof(b), "b value must be finite");
+      if (!double.IsFinite(c))
+        throw new ArgumentOutOfRangeException(nameof(c), "c value must be finite");
+
+      if (b <= a)
+        throw new ArgumentOutOfRangeException(nameof(b), "b must be bigger than a");
+      if (c <= b)
+        throw new ArgumentOutOfRangeException(nameof(c), "c must be bigger than b");
+
+      if (x == 0)
+        return 0;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return Operators.Solve((v) => Cdf(v, a, b, c) - x, a, c);
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) {
       if (x <= A)
         return 0.0;

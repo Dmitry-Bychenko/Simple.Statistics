@@ -89,6 +89,100 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double from, double to, double mode) {
+      if (!double.IsFinite(from))
+        throw new ArgumentOutOfRangeException(nameof(from), "from value must be finite");
+      if (!double.IsFinite(to))
+        throw new ArgumentOutOfRangeException(nameof(to), "to value must be finite");
+      if (!double.IsFinite(mode))
+        throw new ArgumentOutOfRangeException(nameof(mode), "mode value must be finite");
+
+      if (from >= to)
+        throw new ArgumentOutOfRangeException(nameof(to), "empty [from..to) interval");
+      if (from > mode)
+        throw new ArgumentOutOfRangeException(nameof(mode), "wrong mode location (mode < from)");
+      if (mode > to)
+        throw new ArgumentOutOfRangeException(nameof(mode), "wrong mode location (mode > to)");
+
+      return x <= from ? 0.0
+        : x < mode ? (x - from) * (x - from) / (to - from) / (mode - from)
+        : x == mode ? (mode - from) / (to - from)
+        : x < to ? 1.0 - (to - x) * (to - x) / (to - from) / (to - mode)
+        : 1.0;
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double from, double to, double mode) {
+      if (!double.IsFinite(from))
+        throw new ArgumentOutOfRangeException(nameof(from), "from value must be finite");
+      if (!double.IsFinite(to))
+        throw new ArgumentOutOfRangeException(nameof(to), "to value must be finite");
+      if (!double.IsFinite(mode))
+        throw new ArgumentOutOfRangeException(nameof(mode), "mode value must be finite");
+
+      if (from >= to)
+        throw new ArgumentOutOfRangeException(nameof(to), "empty [from..to) interval");
+      if (from > mode)
+        throw new ArgumentOutOfRangeException(nameof(mode), "wrong mode location (mode < from)");
+      if (mode > to)
+        throw new ArgumentOutOfRangeException(nameof(mode), "wrong mode location (mode > to)");
+
+      return x < from ? 0.0
+        : x < mode ? 2.0 * (x - from) / (to - from) / (mode - from)
+        : x == mode ? 2.0 / (to - from)
+        : x < to ? 2 * (to - x) / (to - from) / (to - mode)
+        : 0.0;
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    /// <seealso cref="https://www.boost.org/doc/libs/1_68_0/libs/math/doc/html/math_toolkit/dist_ref/dists/triangular_dist.html"/>
+    public static double Qdf(double x, double from, double to, double mode) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+
+      if (!double.IsFinite(from))
+        throw new ArgumentOutOfRangeException(nameof(from), "from value must be finite");
+      if (!double.IsFinite(to))
+        throw new ArgumentOutOfRangeException(nameof(to), "to value must be finite");
+      if (!double.IsFinite(mode))
+        throw new ArgumentOutOfRangeException(nameof(mode), "mode value must be finite");
+
+      if (from >= to)
+        throw new ArgumentOutOfRangeException(nameof(to), "empty [from..to) interval");
+      if (from > mode)
+        throw new ArgumentOutOfRangeException(nameof(mode), "wrong mode location (mode < from)");
+      if (mode > to)
+        throw new ArgumentOutOfRangeException(nameof(mode), "wrong mode location (mode > to)");
+
+      if (x == 0)
+        return from;
+      if (x == 1)
+        return to;
+
+      double a = from;
+      double b = to;
+      double c = mode;
+
+      double p0 = (c - a) / (b - a);
+
+      if (x < p0)
+        return Math.Sqrt((b - a) * (c - a) * x) + a;
+      if (x == p0)
+        return c;
+
+      return b - Math.Sqrt((b - a) * (b - c) * (1.0 - x));
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) =>
           x <= From ? 0.0
         : x < Mode ? (x - From) * (x - From) / (To - From) / (Mode - From)

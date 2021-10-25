@@ -61,6 +61,63 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double mean, double sigma) {
+      if (!double.IsFinite(mean))
+        throw new ArgumentOutOfRangeException(nameof(mean), "mean value must be finite");
+      if (double.IsInfinity(sigma))
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be finite");
+      if (sigma <= 0)
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be positive");
+
+      return 0.5 + ProbabilityIntegral.Erf((x - mean) / (Math.Sqrt(2) * sigma)) / 2.0;
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double mean, double sigma) {
+      if (!double.IsFinite(mean))
+        throw new ArgumentOutOfRangeException(nameof(mean), "mean value must be finite");
+      if (double.IsInfinity(sigma))
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be finite");
+      if (sigma <= 0)
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be positive");
+
+      double v = (x - mean) / sigma;
+
+      return Math.Exp(-v * v / 2.0) / (sigma * factor);
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double mean, double sigma) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+
+      if (!double.IsFinite(mean))
+        throw new ArgumentOutOfRangeException(nameof(mean), "mean value must be finite");
+      if (double.IsInfinity(sigma))
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be finite");
+      if (sigma <= 0)
+        throw new ArgumentOutOfRangeException(nameof(sigma), "sigma value must be positive");
+
+      if (x == 0)
+        return double.NegativeInfinity;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      Func<double, double> erf = ProbabilityIntegral.Erf;
+
+      return mean + sigma * Math.Sqrt(2) * erf.InverseAt(2.0 * x - 1, mean - 20.0 * sigma, mean + 20.0 * sigma);
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) =>
       0.5 + ProbabilityIntegral.Erf((x - Mean) / (Math.Sqrt(2) * StandardError)) / 2.0;
 
@@ -88,7 +145,7 @@ namespace Simple.Statistics.Distributions.Library {
 
       Func<double, double> erf = ProbabilityIntegral.Erf;
 
-      return Mean + StandardError * Math.Sqrt(2) * erf.InverseAt(2.0 * x - 1, Mean - 10.0 * StandardError, Mean + 10.0 * StandardError);
+      return Mean + StandardError * Math.Sqrt(2) * erf.InverseAt(2.0 * x - 1, Mean - 20.0 * StandardError, Mean + 20.0 * StandardError);
     }
 
     #endregion IContinuousDistribution

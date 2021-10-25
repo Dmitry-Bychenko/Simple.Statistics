@@ -71,6 +71,84 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double shape, double scale) {
+      if (x < 0)
+        throw new ArgumentOutOfRangeException(nameof(x), "value must be positive");
+
+      if (!double.IsFinite(shape))
+        throw new ArgumentOutOfRangeException(nameof(shape), "shape value must be finite");
+      if (!double.IsFinite(scale))
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be positive");
+
+      if (shape <= 0)
+        throw new ArgumentOutOfRangeException(nameof(shape), "shape value must be positive");
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be positive");
+
+      if (x == 0)
+        return 0.0;
+      if (double.IsPositiveInfinity(x))
+        return 1.0;
+
+      return GammaFunctions.GammaLow(shape, x / scale) / GammaFunctions.Gamma(shape);
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double shape, double scale) {
+      if (x < 0)
+        throw new ArgumentOutOfRangeException(nameof(x), "value must be non negative");
+
+      if (!double.IsFinite(shape))
+        throw new ArgumentOutOfRangeException(nameof(shape), "shape value must be finite");
+      if (!double.IsFinite(scale))
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be positive");
+
+      if (shape <= 0)
+        throw new ArgumentOutOfRangeException(nameof(shape), "shape value must be positive");
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be positive");
+
+      if (x == 0)
+        return shape <= 1 ? double.PositiveInfinity : 0.0;
+
+      return Math.Pow(x, shape - 1) *
+             Math.Exp(-x / scale) /
+            (GammaFunctions.Gamma(shape) * Math.Pow(scale, shape));
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double shape, double scale) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+
+      if (!double.IsFinite(shape))
+        throw new ArgumentOutOfRangeException(nameof(shape), "shape value must be finite");
+      if (!double.IsFinite(scale))
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be positive");
+
+      if (shape <= 0)
+        throw new ArgumentOutOfRangeException(nameof(shape), "shape value must be positive");
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale), "scale value must be positive");
+
+      if (x == 0)
+        return 0;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return Operators.Solve((v) => Cdf(v, shape, scale) - x, 0, double.PositiveInfinity);
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) {
       if (x < 0)
         throw new ArgumentOutOfRangeException(nameof(x), "value must be positive");

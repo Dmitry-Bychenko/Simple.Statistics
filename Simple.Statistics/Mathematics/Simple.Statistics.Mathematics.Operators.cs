@@ -96,7 +96,7 @@ namespace Simple.Statistics.Mathematics {
           }
           else
             to = middle;
-        else if (fromValue > toFind)
+        else if (fromValue >= toFind)
           to = middle;
         else {
           fromValue = middleValue;

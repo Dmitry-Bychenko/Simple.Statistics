@@ -59,6 +59,53 @@ namespace Simple.Statistics.Distributions.Library {
     /// Cumulative Density Function
     /// </summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
+    public static double Cdf(double x, double shape, double scale) {
+      if (shape <= 0)
+        throw new ArgumentOutOfRangeException(nameof(shape));
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale));
+
+      return x < 1 ? 0 : 1 - Math.Pow(scale / x, shape);
+    }
+
+    /// <summary>
+    /// Probability Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Probability_density_function"/>
+    public static double Pdf(double x, double shape, double scale) {
+      if (shape <= 0)
+        throw new ArgumentOutOfRangeException(nameof(shape));
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale));
+
+      return x < 1 ? 0 : shape * Math.Pow(scale, shape) / Math.Pow(x, shape + 1);
+    }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public static double Qdf(double x, double shape, double scale) {
+      if (x < 0 || x > 1)
+        throw new ArgumentOutOfRangeException(nameof(x));
+
+      if (shape <= 0)
+        throw new ArgumentOutOfRangeException(nameof(shape));
+      if (scale <= 0)
+        throw new ArgumentOutOfRangeException(nameof(scale));
+
+      if (x == 0)
+        return 1;
+      if (x == 1)
+        return double.PositiveInfinity;
+
+      return scale / Math.Pow(1 - x, 1 / shape);
+    }
+
+    /// <summary>
+    /// Cumulative Density Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Cumulative_distribution_function"/>
     public override double Cdf(double x) =>
       x < 1 ? 0 : 1 - Math.Pow(Scale / x, Shape);
 
