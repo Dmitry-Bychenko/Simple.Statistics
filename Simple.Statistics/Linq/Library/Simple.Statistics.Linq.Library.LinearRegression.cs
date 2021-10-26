@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Simple.Statistics.Distributions.Library;
+
+using System;
 using System.Collections.Generic;
 
 namespace Simple.Statistics.Linq.Library {
@@ -19,9 +21,20 @@ namespace Simple.Statistics.Linq.Library {
     /// </summary>
     /// <param name="xSelector">X selector</param>
     /// <param name="ySelector">Y selector</param>
-    public LinearRegression(Func<T, double> xSelector, Func<T, double> ySelector) {
+    internal LinearRegression(Func<T, double> xSelector, Func<T, double> ySelector) {
       SelectorX = xSelector ?? throw new ArgumentNullException(nameof(xSelector));
       SelectorY = ySelector ?? throw new ArgumentNullException(nameof(ySelector));
+    }
+
+    /// <summary>
+    /// Standard Constructor
+    /// </summary>
+    public LinearRegression(IEnumerable<T> source, Func<T, double> xSelector, Func<T, double> ySelector) 
+      : this (xSelector, ySelector) {
+
+      if (source is not null)
+        foreach (var item in source)
+          ((ISampleStatisticsExecutor<T>)this).Append(item);
     }
 
     #endregion Create
@@ -185,9 +198,28 @@ namespace Simple.Statistics.Linq.Library {
     public double F => R * R / (1 - R * R) * DataDegreeOfFreedom / VariableDegreeOfFreedom;
 
     /// <summary>
+    /// Fisher based pValue (for the entire regression)
+    /// </summary>
+    public double PValue => 1 - FisherDistribution.Qdf(F, DataDegreeOfFreedom, VariableDegreeOfFreedom);
+          
+    /// <summary>
     /// Predictor
     /// </summary>
     public Func<double, double> Predictor => (x) => A * x + B;
+
+    /// <summary>
+    /// Confidence Interval
+    /// </summary>
+    public (double from, double to) ConfidenceInterval(double x, double p) {
+      double d = StudentDistribution.Cdf(p, N - 1) * StandardErrorA;
+
+      double minA = Math.Min((A + d) * x, (A - d) * x);
+      double maxA = Math.Max((A + d) * x, (A - d) * x);
+
+      d = StudentDistribution.Cdf(p, N - 1) * StandardErrorB;
+
+      return (minA + B - d, maxA + B + d);
+    }
 
     #endregion Public
 

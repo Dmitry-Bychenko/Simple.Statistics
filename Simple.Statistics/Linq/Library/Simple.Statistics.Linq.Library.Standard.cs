@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Simple.Statistics.Distributions.Library;
+
+using System;
 using System.Collections.Generic;
 
 namespace Simple.Statistics.Linq.Library {
@@ -16,11 +18,15 @@ namespace Simple.Statistics.Linq.Library {
 
     private readonly IComparer<T> m_Comparer;
 
+    private double m_SumR;
+
+    private double m_SumLog;
+
     #endregion Private Data
 
     #region Algorithm
 
-    private static double StandardMap(T item) => (double)Convert.ToDouble(item);
+    private static double StandardSelector(T item) => (double)Convert.ToDouble(item);
 
     #endregion Algorithm
 
@@ -29,22 +35,33 @@ namespace Simple.Statistics.Linq.Library {
     /// <summary>
     /// Standard Constructor
     /// </summary>
-    public StandardSampleStatistics(Func<T, double> map, IComparer<T> comparer) {
-      if (map is null) {
+    internal StandardSampleStatistics(Func<T, double> selector, IComparer<T> comparer) {
+      if (selector is null) {
         if (typeof(double).IsAssignableFrom(typeof(T)))
-          Map = StandardMap;
+          Selector = StandardSelector;
       }
 
-      Map = map ?? throw new ArgumentNullException(nameof(map));
+      Selector = selector ?? throw new ArgumentNullException(nameof(selector));
 
       if (comparer is null) {
         comparer = Comparer<T>.Default;
 
         if (comparer is null)
-          comparer = Comparer<T>.Create((left, right) => Map(left).CompareTo(Map(right)));
+          comparer = Comparer<T>.Create((left, right) => Selector(left).CompareTo(Selector(right)));
       }
 
       m_Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    }
+
+    /// <summary>
+    /// Standard Constructor
+    /// </summary>
+    public StandardSampleStatistics(IEnumerable<T> source, Func<T, double> selector, IComparer<T> comparer)
+      : this(selector, comparer) {
+
+      if (source is not null)
+        foreach (var item in source)
+          ((ISampleStatisticsExecutor<T>)this).Append(item);
     }
 
     #endregion Create
@@ -52,9 +69,9 @@ namespace Simple.Statistics.Linq.Library {
     #region Public
 
     /// <summary>
-    /// Map
+    /// Selector
     /// </summary>
-    public Func<T, double> Map { get; }
+    public Func<T, double> Selector { get; }
 
     /// <summary>
     /// Count
@@ -82,9 +99,24 @@ namespace Simple.Statistics.Linq.Library {
     public double Sum4 { get; private set; }
 
     /// <summary>
-    /// Average
+    /// Mean
     /// </summary>
-    public double Average => Sum / Count;
+    public double Mean => Sum / Count;
+
+    /// <summary>
+    /// Quadratic Mean
+    /// </summary>
+    public double QuadraticMean => Math.Sqrt(Sum2 / Count);
+
+    /// <summary>
+    /// Harmonic Mean
+    /// </summary>
+    public double HarmonicMean => Count / m_SumR;
+
+    /// <summary>
+    /// Geometric Mean
+    /// </summary>
+    public double GeometricMean => Parity * Math.Exp(m_SumLog / Count);
 
     /// <summary>
     /// Variance
@@ -167,6 +199,36 @@ namespace Simple.Statistics.Linq.Library {
     /// </summary>
     public long MinIndex { get; private set; } = -1;
 
+    /// <summary>
+    /// Student Qdf 
+    /// </summary>
+    public double Student(double x) => StudentDistribution.Qdf(Math.Abs(x - Mean) / StandardError, Count - 1);
+
+    /// <summary>
+    /// Confidence Interval
+    /// </summary>
+    /// <param name="p">level in [0..1] range</param>
+    public (double from, double to) ConfidenceInterval(double p) {
+      if (p < 0 || p > 1)
+        throw new ArgumentOutOfRangeException(nameof(p));
+
+      var mean = Mean;
+
+      if (0 == p)
+        return (mean, mean);
+      if (1 == p)
+        return Variance == 0 ? (mean, mean) : (double.NegativeInfinity, double.PositiveInfinity);
+
+      double d = StudentDistribution.Cdf(p, Count - 1) * StandardError;
+
+      return (mean - d, mean + d);
+    }
+
+    /// <summary>
+    /// Parity
+    /// </summary>
+    public int Parity { get; private set; } = 1;
+
     #endregion Public
 
     #region ISampleStatisticsExecutor<T>
@@ -185,12 +247,22 @@ namespace Simple.Statistics.Linq.Library {
 
       Count += 1;
 
-      double value = Map(item);
+      double value = Selector(item);
 
       Sum += value;
       Sum2 += value * value;
       Sum3 += value * value * value;
       Sum4 += value * value * value * value;
+
+      m_SumR += 1.0 / value;
+
+      if (value == 0)
+        Parity = 0;
+      else if (value < 0)
+        Parity = -Parity;
+
+      if (value > 0)
+        m_SumLog += Math.Log(Math.Abs(value));
     }
 
     #endregion ISampleStatisticsExecutor<T>

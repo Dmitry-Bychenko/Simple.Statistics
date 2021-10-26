@@ -6,3 +6,5 @@ https://en.wikipedia.org/wiki/List_of_probability_distributions
 
 https://stackoverflow.com/questions/18836120/using-c-inline-assembly-in-c-sharp
 https://www.codeproject.com/Tips/855149/Csharp-Fast-Memory-Copy-Method-with-x-Assembly-Usa
+
+https://habr.com/ru/post/441392/
