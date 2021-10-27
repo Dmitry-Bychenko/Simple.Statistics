@@ -17,9 +17,9 @@ namespace Simple.Statistics.Mathematics {
       if (double.IsNaN(value))
         throw new ArgumentException("Argument must not be NaN", nameof(value));
       if (double.IsNegativeInfinity(value))
-        return double.MinValue;
+        return -1e200;//double.MinValue;
       if (double.IsPositiveInfinity(value))
-        return double.MaxValue;
+        return 1e200;//double.MaxValue;
       else
         return value;
     }
