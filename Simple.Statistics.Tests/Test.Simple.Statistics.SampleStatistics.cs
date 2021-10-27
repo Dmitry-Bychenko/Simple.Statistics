@@ -9,16 +9,18 @@ namespace Simple.Statistics.Tests {
   [TestClass]
   public class LinearRegressionTest {
 
-    //[TestMethod]
-    //public void Demo() {
-    //  var dist = new StudentDistribution(7);
+    [TestMethod]
+    public void Demo() {
+      //var dist = new StudentDistribution(7);
 
-    //  var v = dist.Qdf(0.99);
+      //var v = dist.Qdf(0.99);
 
-    //  //var v = StudentDistribution.Qdf(0.99, 7);
+      var v = FisherDistribution.Qdf(0.90, 4, 7);
 
-    //  Assert.Fail($"{v}");
-    //}
+      //var v = StudentDistribution.Qdf(0.99, 7);
+
+      Assert.Fail($"{v}");
+    }
 
     //[TestMethod]
     //public void Parabolic() {

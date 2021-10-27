@@ -113,7 +113,9 @@ namespace Simple.Statistics.Distributions.Library {
       if (x == 1)
         return double.PositiveInfinity;
 
-      return Operators.Solve((v) => Cdf(v, d1, d2) - x, 0, double.PositiveInfinity);
+      double result = Operators.Solve((v) => Cdf(v, d1, d2) - x, 0, 1e200);
+
+      return result;
     }
 
     /// <summary>
@@ -142,6 +144,12 @@ namespace Simple.Statistics.Distributions.Library {
                        Math.Pow(D1 * x + D2, D1 + D2)) /
              (x * GammaFunctions.BetaFunc(D1 / 2, D2 / 2));
     }
+
+    /// <summary>
+    /// Quantile Distribution Function
+    /// </summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile_function"/>
+    public override double Qdf(double x) => Qdf(x, D1, D2);
 
     #endregion IContinuousDistribution
   }

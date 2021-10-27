@@ -23,13 +23,13 @@ namespace Simple.Statistics.Mathematics {
     #region Algorithm
 
     // Integer Factoial
-    internal static Double IntFactorial(int value) {
+    internal static double IntFactorial(int value) {
       if (value <= 0)
-        return Double.PositiveInfinity;
+        return double.PositiveInfinity;
       else if (value <= 1)
         return 1.0;
 
-      Double result = 1.0;
+      double result = 1.0;
 
       for (int i = value; i > 1; --i)
         result *= i;
@@ -38,12 +38,11 @@ namespace Simple.Statistics.Mathematics {
     }
 
     // Log Stirling
-    internal static Double LogStirling(Double x) {
-      return Math.Log(2 * Math.PI * x) / 2 +
-             x * Math.Log(x) - x +
-             Math.Log(1 + 1 / (12 * x) + 1 / (288 * x * x) - 139 / (51840 * x * x * x) - 571 / (2488320 * x * x * x * x) + 163879 / (209018880 * x * x * x * x * x));
-    }
-
+    internal static double LogStirling(double x) =>
+      Math.Log(2 * Math.PI * x) / 2 +
+      x * Math.Log(x) - x +
+      Math.Log(1 + 1 / (12 * x) + 1 / (288 * x * x) - 139 / (51840 * x * x * x) - 571 / (2488320 * x * x * x * x) + 163879 / (209018880 * x * x * x * x * x));
+    
     #endregion Algorithm
 
     #region Public
@@ -51,7 +50,7 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Bernulli coefficients
     /// </summary>
-    public static Double BernoulliCoefficient(int value) {
+    public static double BernoulliCoefficient(int value) {
       if (value < 0)
         return 0;
 
@@ -94,7 +93,7 @@ namespace Simple.Statistics.Mathematics {
       // Explicit calculation
       const int precision = 100;
 
-      Double result = 0.0;
+      double result = 0.0;
 
       for (int i = 1; i < precision; ++i)
         result += System.Math.Pow(i, -value);
@@ -110,18 +109,18 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Gamma
     /// </summary>
-    public static Double Gamma(this Double value) {
+    public static double Gamma(this double value) {
       if (value <= 0.0)
         if (System.Math.Round(value) == value)
-          return Double.PositiveInfinity;
+          return double.PositiveInfinity;
 
       // Negative to positive plus correction
       if (value < 0) {
-        Double ADelta = System.Math.Round(-value + s_GammaThreshold);
-        Double result = Gamma(value + ADelta);
+        double ADelta = System.Math.Round(-value + s_GammaThreshold);
+        double result = Gamma(value + ADelta);
 
         // Correction
-        Double idx = 0;
+        double idx = 0;
 
         while (idx < ADelta - 0.5) {
           idx += 1.0;
@@ -135,7 +134,7 @@ namespace Simple.Statistics.Mathematics {
       // Positive only.
       // Shift if arg1 is too small
       if ((value > 0.0) && (value < s_GammaThreshold)) {
-        Double result = Gamma(value + s_GammaThreshold);
+        double result = Gamma(value + s_GammaThreshold);
 
         for (int i = 0; i < s_GammaThreshold; ++i)
           result /= (value + i);
@@ -144,7 +143,7 @@ namespace Simple.Statistics.Mathematics {
       }
 
       // Standard (big) value through Bernulli coefficients
-      Double ARes = 0.0;
+      double ARes = 0.0;
 
       for (int i = 1; i <= s_BernulliCount; ++i)
         ARes += BernoulliCoefficient(2 * i) / (2 * i) / (2 * i - 1) / System.Math.Pow(value, 2 * i - 1);
@@ -156,10 +155,10 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Log Gamma
     /// </summary>
-    public static Double LogGamma(Double value) {
+    public static double LogGamma(double value) {
       if (value <= 0.0)
         if (System.Math.Round(value) == value)
-          return Double.PositiveInfinity;
+          return double.PositiveInfinity;
 
       if (value > 0)
         if (value > 50.0)
@@ -167,7 +166,7 @@ namespace Simple.Statistics.Mathematics {
         else
           return Math.Log(Gamma(value));
       else {
-        Double sin = Math.Abs(Math.Sin(Math.PI * (1 + value)));
+        double sin = Math.Abs(Math.Sin(Math.PI * (1 + value)));
 
         if ((-value > 50.0) || (sin < 1e-40))
           return Math.Log(Math.PI) - Math.Log(sin) - LogStirling(value);
@@ -179,7 +178,7 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Sign of the Gamma function
     /// </summary>
-    public static int SignGamma(Double value) {
+    public static int SignGamma(double value) {
       if (value >= 0)
         return 1;
 
@@ -199,30 +198,26 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Factorial (or Gauss function)
     /// </summary>
-    public static Double Factorial(this Double value) {
-      return Gamma(value + 1.0);
-    }
-
+    public static double Factorial(this double value) => Gamma(value + 1.0);
+    
     /// <summary>
     /// Beta (Euler function)
     /// </summary>
-    public static Double BetaFunc(Double valueA, Double valueB) {
-      //  Gamma(valueA + valueB) / (Gamma(valueA) * Gamma(valueB));
-      return Math.Exp(LogGamma(valueA) + LogGamma(valueB) - LogGamma(valueA + valueB)) *
-             SignGamma(valueA) * SignGamma(valueB) * SignGamma(valueA + valueB);
-    }
+    public static double BetaFunc(double valueA, double valueB) =>
+      Math.Exp(LogGamma(valueA) + LogGamma(valueB) - LogGamma(valueA + valueB)) *
+      SignGamma(valueA) * SignGamma(valueB) * SignGamma(valueA + valueB);
 
     /// <summary>
     /// Incomplete Beta function
     /// </summary>
-    public static Double BetaIncomplete(Double x, Double a, Double b) {
-      Double p = 1.0;
-      Double s = p / (a);
+    public static double BetaIncomplete(double x, double a, double b) {
+      double p = 1.0;
+      double s = p / (a);
 
       for (int n = 1; n < 1000; ++n) {
         p = p * (n - b) / n * x;
 
-        Double d = p / (a + n);
+        double d = p / (a + n);
 
         if ((d < 1e-20) && (d > -1e-20))
           break;
@@ -236,23 +231,22 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Incomplete regularized Beta function
     /// </summary>
-    public static Double BetaIncompleteRegular(Double x, Double a, Double b) {
-      return BetaIncomplete(x, a, b) / BetaFunc(a, b);
-    }
-
+    public static double BetaIncompleteRegular(double x, double a, double b) =>
+      BetaIncomplete(x, a, b) / BetaFunc(a, b);
+    
     /// <summary>
     /// Incomplete Gamma function (gamma)
     /// </summary>
-    public static Double GammaLow(Double s, Double x) {
+    public static double GammaLow(double s, double x) {
       if (x == 0)
         return 0.0;
 
-      Double result = 0.0;
+      double result = 0.0;
 
-      Double g = Gamma(s + 1);
-      Double p;
+      double g = Gamma(s + 1);
+      double p;
 
-      if (Double.IsInfinity(g)) {
+      if (double.IsInfinity(g)) {
         for (int k = 0; k < 100; ++k) {
           p = Math.Pow(x, k) / Gamma(s + k + 1);
 
@@ -283,16 +277,16 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Incomplete Gamma function (gamma), regularized
     /// </summary>
-    public static Double GammaLowRegular(Double s, Double x) {
+    public static double GammaLowRegular(double s, double x) {
       if (x == 0)
         return 0.0;
 
-      Double result = 0.0;
+      double result = 0.0;
 
-      Double g = Gamma(s + 1);
-      Double p;
+      double g = Gamma(s + 1);
+      double p;
 
-      if (Double.IsInfinity(g)) {
+      if (double.IsInfinity(g)) {
         for (int k = 0; k < 1000; ++k) {
           p = Math.Pow(x, k) / Gamma(s + k + 1);
 
@@ -326,26 +320,20 @@ namespace Simple.Statistics.Mathematics {
     /// <summary>
     /// Incomplete Gamma function (Gamma)
     /// </summary>
-    public static Double GammaHigh(Double s, Double x) {
-      return Gamma(s) - GammaLow(s, x);
-    }
-
+    public static double GammaHigh(double s, double x) => Gamma(s) - GammaLow(s, x);
+    
     /// <summary>
     /// Incomplete Gamma function (Gamma)
     /// </summary>
-    public static Double GammaHighRegular(Double s, Double x) {
-      return (Gamma(s) - GammaLow(s, x)) / Gamma(x);
-    }
-
+    public static double GammaHighRegular(double s, double x) => (Gamma(s) - GammaLow(s, x)) / Gamma(x);
+    
     /// <summary>
     /// Pochhammer symbol (x)n
     /// </summary>
     /// <param name="value">Value</param>
     /// <param name="n">Degree</param>
-    public static Double Pochhammer(Double value, Double n) {
-      return Gamma(value + n) / Gamma(n);
-    }
-
+    public static double Pochhammer(double value, double n) => Gamma(value + n) / Gamma(n);
+    
     #endregion Public
   }
 
