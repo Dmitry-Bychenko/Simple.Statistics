@@ -7,7 +7,7 @@
     <Description>Simple Statistics</Description>
     <Copyright>Copyright (c) 2021 by Dmitry Bychenko</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Initial Release</PackageReleaseNotes>
+    <PackageReleaseNotes>Windowed Statistics</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/Dmitry-Bychenko/Simple.Statistics</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Dmitry-Bychenko/Simple.Statistics</PackageProjectUrl>
     <PackageTags>Statistics</PackageTags>
@@ -15,6 +15,7 @@
     <PackageIconUrl />
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Simple.Statistics.snk.pfx</AssemblyOriginatorKeyFile>
+    <Version>1.0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

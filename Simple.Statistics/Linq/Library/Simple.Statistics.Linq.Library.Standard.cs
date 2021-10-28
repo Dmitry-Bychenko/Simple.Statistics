@@ -229,6 +229,12 @@ namespace Simple.Statistics.Linq.Library {
     /// </summary>
     public int Parity { get; private set; } = 1;
 
+    /// <summary>
+    /// To String
+    /// </summary>
+    public override string ToString() =>
+      $"N = {Count}; Min = {Min}, Max = {Max}; Mean = {Mean}, StdErr = {StandardError}";
+
     #endregion Public
 
     #region ISampleStatisticsExecutor<T>
@@ -264,7 +270,7 @@ namespace Simple.Statistics.Linq.Library {
       if (value > 0)
         m_SumLog += Math.Log(Math.Abs(value));
     }
-
+        
     #endregion ISampleStatisticsExecutor<T>
   }
 
@@ -318,4 +324,5 @@ namespace Simple.Statistics.Linq.Library {
 
     #endregion Public
   }
+
 }

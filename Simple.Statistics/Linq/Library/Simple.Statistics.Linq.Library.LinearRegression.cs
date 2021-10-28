@@ -8,12 +8,12 @@ namespace Simple.Statistics.Linq.Library {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// 
+  /// Linear Regression
   /// </summary>
   //
   //-------------------------------------------------------------------------------------------------------------------
 
-  public sealed class LinearRegression<T> : ISampleStatisticsExecutor<T> {
+  public sealed class LinearRegression<T> : IWindowedStatisticsExecutor<T> {
     #region Create
 
     /// <summary>
@@ -221,6 +221,11 @@ namespace Simple.Statistics.Linq.Library {
       return (minA + B - d, maxA + B + d);
     }
 
+    /// <summary>
+    /// To String
+    /// </summary>
+    public override string ToString() => $"y = {A} * x + {B} (N = {N}; R = {R})";
+
     #endregion Public
 
     #region ISampleStatisticsExecutor<T>
@@ -239,6 +244,23 @@ namespace Simple.Statistics.Linq.Library {
     }
 
     #endregion ISampleStatisticsExecutor<T>
+
+    #region IWindowedStatisticsExecutor<T>
+
+    void IWindowedStatisticsExecutor<T>.Remove(T item) {
+      N -= 1;
+
+      double x = SelectorX(item);
+      double y = SelectorY(item);
+
+      Sx -= x;
+      Sy -= y;
+      Sxx -= x * x;
+      Syy -= y * y;
+      Sxy -= x * y;
+    }
+
+    #endregion IWindowedStatisticsExecutor<T>
   }
 
   //-------------------------------------------------------------------------------------------------------------------
